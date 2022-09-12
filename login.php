@@ -9,7 +9,7 @@ include('mynav.php');
      </div>
     <div class="col-md-7">
         <h3 class="text-collapse"><small>Enter valid details to continue</small></h3>
-       <form action="homepage.php" action="get">
+       <form action="dashboard.php" action="get">
         <label for="firstname" class="form-label">Username:</label>
         <input type="text" class="form-control" id="firstname" name="username" required>
         <label for="firstname" class="form-label">Password:</label>

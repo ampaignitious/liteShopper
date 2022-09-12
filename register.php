@@ -18,10 +18,16 @@ include('mynav.php');
         <input type="text" class="form-control" id="username" name="username"  placeholder="enter  username"required>
         <label for="user-email" class="form-label">User-email:</label>
         <input type="email" class="form-control" id="useremail" name="useremail" placeholder="enter a valid email"required>
+        <label for="user-email" class="form-label">Select User type:</label>
+        <select class="form-select" aria-label="User type" >
+         <option selected>Select User type</option>
+         <option value="admin">Admin</option>
+         <option value="attendant">Attendant</option>
+        </select>
         <label for="password" class="form-label">Password:</label>
         <input type="password" class="form-control" id="password" name="password" placeholder="Create Password"required>
         <label for="password2" class="form-label">Confirm password:</label>
-        <input type="paassword2" class="form-control" id="password2" name="password2" placeholder="Re-enter the password"required>
+        <input type="password" class="form-control" id="password2" name="password2" placeholder="Re-enter the password"required>
         <br>
         <button class="btn btn-sm bg-danger text-white p-2" type="submit">Login to continue</a></button>
        </form>
