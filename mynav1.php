@@ -1,13 +1,9 @@
-<?php
-  $items = array("Available stock","Register stock","View reports","System users");
-?>
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Shop WIth Us</title>
-    <script  src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
   </head>
   <body>
@@ -20,23 +16,11 @@
     </button>
     <div class="collapse navbar-collapse justify-content-end " id="navbarNav">
       <ul class="navbar-nav ">
-      <li class="nav-item ">
-          <a class="nav-link active text-white" aria-current="page" href="dashboard.php">Home</a>
-        </li>
         <li class="nav-item ">
-          <a class="nav-link active text-white" aria-current="page" href="dashboard1.php?msg=<?php echo $items[0]?>">Available stock</a>
-        </li>
-        <li class="nav-item ">
-          <a class="nav-link active text-white" aria-current="page" href="dashboard1.php?msg=<?php echo $items[1]?>">Register stock</a>
-        </li>
-        <li class="nav-item ">
-          <a class="nav-link active text-white" aria-current="page" href="dashboard1.php?msg=<?php echo $items[2]?>">Reports</a>
+          <a class="nav-link active text-white" aria-current="page" href="homepage.php">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="dashboard1.php?msg=<?php echo $items[3]?>">Users</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="logout.php>">Logout</a>
+          <a class="nav-link text-white " href="login.php">Login</a>
         </li>
       </ul>
     </div>

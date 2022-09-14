@@ -1,5 +1,5 @@
 <?php
-include('mynav.php');
+include('mynav1.php');
 ?>
 <div class="container">
   <div class="row">
