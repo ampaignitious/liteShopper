@@ -1,26 +1,18 @@
 <?php
 include('mynav.php');
 ?>
-<div style="padding-top:45px;">
+<?php 
+if(!($_SESSION['USER_ID'])){
+    header("location:login.php");
+    die();
+}
+?>
+<div style="padding-top:40px;">
 </div>
 <div class="container p-1 m-auto ">
-<div class="d-none d-sm-block mt-3">
-<ul class="list-group list-group-horizontal">
-    <li class="list-group-item flex-fill justify-content-between align-items-start">
-     <p style="font-size:18px;" ><b>User</b> welcome to the <span class="text-danger fw-bold">Admin dashboard menu</span>
-</p>
-    </li>
-    <li class="list-group-item flex-fill justify-content-between align-items-start">
-    <p class="fw-bold">DATE:<span style="margin-left:10px;"><?php echo date("y-m-d")?></span></p>
-    </li>
-    <li class="list-group-item  justify-content-between align-items-start">
-    <p class="fw-bold text-danger">Time:<span style="padding-left:10px;"><?php 
-      date_default_timezone_set('Asia/Kolkata');
-      echo $runningTime =date('h:i:s');
-     ?></span></p>
-    </li>
-</ul>
-</div>
+<?php
+include('dashborditem.php');
+?>
 <p style="margin-top:20px; margin-bottom:-20px; font-size:22px;" class="d-md-none d-md-block"><span style="color:red; font-weight:bold; padding-bottom:">Admin dashboard </span><span style="padding-left:85px;"><?php 
 date_default_timezone_set('Asia/Kolkata');
 echo $runningTime =date('h:i:s');
@@ -31,9 +23,9 @@ echo $runningTime =date('h:i:s');
         <!-- the dashboard section -->
         <?php 
         $i=0;
-        $items = array("Available stock","Register stock","View reports","System users");
+        $items = array("Stock","Sales","View reports","System users");
         $links=array("stock.php","reports.php","users.php");
-        $imgs=array("img5.png","img3.png","img4.png","user2.png");
+        $imgs=array("img6.png","img7.png","img4.png","user2.png");
         while($i<4):
         ?>
         <!-- section -->
@@ -66,14 +58,14 @@ echo $runningTime =date('h:i:s');
         <!-- the dashboard section -->
         <?php 
         $i=0;
-        $items = array("Sales","Logout","Reports","System users");
+        $items = array("Promotions","Logout","Stock","Reports");
         $links=array("stock.php","reports.php","users.php");
-        $imgs=array("img7.png","img8.png","user1.png","user2.png");
+        $imgs=array("img5.png","img8.png","user1.png","user2.png");
         while($i<4):
         ?>
         <!-- section -->
         <div class="col-md-3 p-5 border">
-        <a href="dashboard.php?msg=<?php echo $items[$i]?>"><img src="<?php echo $imgs[$i]?>" class="img-responsive" width="70%" alt=""  style="padding-left:38px;"></a>
+        <a href="dashboard1.php?msg=<?php echo $items[$i]?>"><img src="<?php echo $imgs[$i]?>" class="img-responsive" width="70%" alt=""  style="padding-left:38px;"></a>
         <br>
         <span class="d-md-none d-md-block"style="padding-left:90px;"><?php echo $items[$i]?></span>
         <div  class="d-none d-sm-block " style="text-align:center; ">

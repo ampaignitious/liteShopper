@@ -10,11 +10,19 @@ $database_checker = mysqli_query($conn, "select * from users where username='$us
 $user_checker=mysqli_num_rows($database_checker);
 $user_details=mysqli_fetch_assoc( $database_checker);
 if($user_checker==1){
-if(($username==$user_details['username']) && ($userpassword == $user_details['password']))
-if($user_details['usertype']=='admin'){
-    header("location:dashboard.php?message=$username");
+if(($username===$user_details['username'])){
+    if($userpassword === $user_details['password']){
+        if($user_details['usertype']==='admin'){
+            $_SESSION['USER_ID'] =$user_details['id'];
+            $_SESSION['USER_USERNAME'] =$user_details['username'];
+            header("location:dashboard.php");
+        }else{
+            $_SESSION['USER_ID'] =$user_details['id'];
+            $_SESSION['USER_USERNAME'] =$user_details['username'];
+            header("location:dashboard.php?attendant=true");
+        }
+    }
 }
-
 }else{
     header("location:login.php?message=incorrect details, try again..");
 }
@@ -82,3 +90,30 @@ if(isset($_POST['updateuser'])){
 }
 ?>
 <!-- end of section for updating users details -->
+
+
+
+<!-- registering products section -->
+<?php
+if(isset($_POST['registerproduct'])){
+$productname1 = mysqli_real_escape_string($conn, $_POST['productname']);
+$buyingprice =mysqli_real_escape_string($conn, $_POST['buyingprice']);
+$sellingprice = mysqli_real_escape_string($conn, $_POST['sellingprice']);
+$registeredby = mysqli_real_escape_string($conn, $_POST['registeredby']);
+$measurementtype =mysqli_real_escape_string($conn, $_POST['measurementtype']);
+$enteredon =mysqli_real_escape_string($conn, $_POST['registeredon']);
+$quantity =mysqli_real_escape_string($conn, $_POST['quantity']);
+// check whether the product name already exits
+
+$products= mysqli_query($conn, "select productname from stock where productname =$productname1");
+$products_in_array = mysqli_num_rows($products);
+if($products_in_array>0){
+    header("location:dashboard1.php?msg=Register stock && regstrationmessage=product name already exits, update the product values");
+}else{
+    mysqli_query($conn, "insert into stock (productname,buyingprice,sellingprice,registeredby,measurementtype,quantity,enteredon) values($productname1,$buyingprice,$sellingprice,$registeredby,$measurementtype,$quantity,$enteredon)");
+    header("location:dashboard1.php?msg=Register stock && regstrationmessage=product registered successfully");
+
+}
+}
+?>
+<!-- end of registring products section -->

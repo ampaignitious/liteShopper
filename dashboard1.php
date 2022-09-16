@@ -1,6 +1,13 @@
 <?php
-include('database.php');
 include('mynav.php');
+?>
+<?php 
+if(!($_SESSION['USER_ID'])){
+    header("location:login.php");
+    die();
+}
+?>
+<?php
 $usersection='';
 $msg='';
 if(isset($_GET['msg'])){
@@ -8,7 +15,65 @@ if(isset($_GET['msg'])){
 ?>
 <?php }?>
 <?php     
-if($msg=="Register stock"){?>
+if($msg=="Logout"){
+session_start();
+unset( $_SESSION['USER_ID']);
+unset($_SESSION['USER_NAME']);
+header("location:login.php");
+die();
+}elseif($msg=="Stock"){?>
+
+
+<!-- beginning of stocksection -->
+<div style="padding-top:40px;">
+</div>
+<div class="container">
+<?php 
+include('dashborditem.php');
+ ?>
+<div class="row m-auto pt-1 mt-0">
+<p style="margin-top:8x; margin-bottom:4px; font-size:20px; color:red;" class=" d-none d-sm-block"><b>Stock section</b></p>
+<p style="margin-top:1px; margin-bottom:-2px; font-size:20px; padding:15px; text-align:center;" class="text-danger d-md-none d-md-block"><b>System Users section</b></p>
+        <!-- the dashboard section -->
+        <?php 
+        $i=0;
+        $items = array("Available stock","Register stock","Login Tracker");
+        $links=array("stock.php","reports.php","users.php");
+        $imgs=array("img5.png","img3.png","user1.png","user2.png");
+        while($i<3):
+        ?>
+        <!-- section -->
+        <div class="col-md-4 col-sm-12 p-5 border">
+        <a href="dashboard1.php?msg=<?php echo $items[$i]?>" style="padding-left:38px;"><img src="<?php echo $imgs[$i]?>" class="img-responsive" width="60%" alt=""  style="padding-left:38px;"></a>
+        <br>
+        <span class="d-md-none d-md-block"style="padding-left:90px;"><?php echo $items[$i]?></span>
+        <div  class="d-none d-sm-block " style="text-align:center; ">
+        <?php if($i==2){?> 
+            <span style="padding-left:28px;"><?php echo $items[$i]?></span>
+        <?php  
+        }
+        elseif($i==3){?>
+        <span style="padding-left:28px;"><?php echo $items[$i]?></span>
+        <?php }else{?>
+        <span><?php echo $items[$i]?></span>
+        <?php }?>
+        </div>
+        </div>
+        <!-- endsection -->
+       <?php
+       $i=$i+1;
+       endwhile
+       ?>
+       <!-- the dashboard section -->
+</div>
+</div>
+<!-- end of stock section dashboard-->
+
+
+
+
+<?php
+}elseif($msg=="Register stock"){?>
 <!-- register stock section -->
 <div class="container">
 <div class="row m-auto pt-4 mt-5" >
@@ -18,7 +83,7 @@ if($msg=="Register stock"){?>
         <div class="col-md-9">
         <div class="col-md-9">
         <h3 class="text-collapse"><small>Register Stock</small></h3>
-       <form action="homepage.php" action="get">
+       <form action="processing.php" method="POST">
         <label for="product-name" class="form-label">product-name:</label>
         <input type="text" class="form-control" id="productname" name="productname" placeholder="enter product name"required>
         <label for="buying-price" class="form-label">buying-price(shs):</label>
@@ -26,13 +91,13 @@ if($msg=="Register stock"){?>
         <label for="selling-price" class="form-label">selling-price(shs):</label>
         <input type="number" class="form-control" id="sellingprice" name="sellingprice" placeholder="enter selling price"required>
         <label for="user-email" class="form-label">Registered by:</label>
-        <select class="form-select" aria-label="User type" >
+        <select class="form-select" aria-label="User type" name="registeredby">
          <option selected>select username</option>
          <option value="admin">Admin</option>
          <option value="attendant">Attendant</option>
         </select>
         <option selected>Select Measurement type</option>
-        <select class="form-select" aria-label="User type" >
+        <select class="form-select" aria-label="User type" name="measurementtype">
          <option selected>Measurement</option>
          <option value="boxes">boxes</option>
          <option value="litres">litres</option>
@@ -40,10 +105,12 @@ if($msg=="Register stock"){?>
          <option value="tins">tins</option>
          <option value="onebyone">one by one</option>
         </select>
+        <label for="date" class="form-label">Quantity:</label>
+        <input type="number" class="form-control" id="quantity" name="quantity" placeholder="enter product quantity"required>
         <label for="date" class="form-label">Entered on:</label>
-        <input type="date" class="form-control" id="date" name="date" placeholder="select registration date"required>
+        <input type="date" class="form-control" id="date" name="registeredon" placeholder="select registration date"required>
         <br>
-        <button class="btn btn-sm bg-danger text-white p-2" type="submit">submit</a></button>
+        <button class="btn btn-sm bg-danger text-white p-2" type="submit" name="registerproduct">submit</a></button>
         <br>
         <br>
        </form>
@@ -161,7 +228,7 @@ header('location:register.php');
  }elseif($usersection=="Available users"){
 ?>
 <div class="container">
-<div class="row m-auto pt-4 mt-4 d-none d-sm-block">
+<div class="row pt-4 mt-4 d-none d-sm-block">
 <!-- getting the total number of attendents in the database -->
 <?php
             $totalattendants=mysqli_query($conn, "select count(usertype) as total from users where usertype='attendant'");

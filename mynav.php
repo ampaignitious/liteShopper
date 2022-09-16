@@ -1,5 +1,8 @@
 <?php
-  $items = array("Available stock","Register stock","View reports","System users");
+include('database.php');
+?>
+<?php
+  $items = array("Stock","Sales","View reports","System users","Logout");
 ?>
 <!doctype html>
 <html lang="en">
@@ -24,10 +27,10 @@
           <a class="nav-link active text-white" aria-current="page" href="dashboard.php">Home</a>
         </li>
         <li class="nav-item ">
-          <a class="nav-link active text-white" aria-current="page" href="dashboard1.php?msg=<?php echo $items[0]?>">Available stock</a>
+          <a class="nav-link active text-white" aria-current="page" href="dashboard1.php?msg=<?php echo $items[0]?>">Stock</a>
         </li>
         <li class="nav-item ">
-          <a class="nav-link active text-white" aria-current="page" href="dashboard1.php?msg=<?php echo $items[1]?>">Register stock</a>
+          <a class="nav-link active text-white" aria-current="page" href="dashboard1.php?msg=<?php echo $items[1]?>">Sales</a>
         </li>
         <li class="nav-item ">
           <a class="nav-link active text-white" aria-current="page" href="dashboard1.php?msg=<?php echo $items[2]?>">Reports</a>
@@ -36,7 +39,7 @@
           <a class="nav-link text-white " href="dashboard1.php?msg=<?php echo $items[3]?>">Users</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="logout.php>">Logout</a>
+          <a class="nav-link text-white " href="dashboard1.php?msg=<?php echo $items[4]?>">Logout</a>
         </li>
       </ul>
     </div>

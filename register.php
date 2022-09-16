@@ -1,6 +1,13 @@
 <?php
-include('database.php');
 include('mynav.php');
+?>
+<?php 
+if(!($_SESSION['USER_ID'])){
+    header("location:login.php");
+    die();
+}
+?>
+<?php
 $firstname='';
 $lastname ='';
 $username ='';
