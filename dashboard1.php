@@ -11,7 +11,7 @@ if(isset($_GET['msg'])){
 if($msg=="Register stock"){?>
 <!-- register stock section -->
 <div class="container">
-<div class="row m-auto pt-5 mt-5" >
+<div class="row m-auto pt-4 mt-5" >
         <div class="col-md-3">
         <img src="img3.png" class=" pt-4 d-none d-sm-block img-fluid" width="50%" alt="">
         </div>
@@ -42,12 +42,10 @@ if($msg=="Register stock"){?>
         </select>
         <label for="date" class="form-label">Entered on:</label>
         <input type="date" class="form-control" id="date" name="date" placeholder="select registration date"required>
-        <label for="password" class="form-label">Password:</label>
-        <input type="password" class="form-control" id="password" name="password" placeholder="Create Password"required>
-        <label for="password2" class="form-label">Confirm password:</label>
-        <input type="password" class="form-control" id="password2" name="password2" placeholder="Re-enter the password"required>
         <br>
-        <button class="btn btn-sm bg-danger text-white p-2" type="submit">Login to continue</a></button>
+        <button class="btn btn-sm bg-danger text-white p-2" type="submit">submit</a></button>
+        <br>
+        <br>
        </form>
     </div>  
         </div>
@@ -58,19 +56,60 @@ if($msg=="Register stock"){?>
 
 <!-- start of available stock -->
 <?php }elseif($msg=="Available stock"){?>
-<div class="container">
-<div class="row m-auto pt-4 mt-4">
-<table>
-    <caption>Available stock</caption>
+<div class="container ">
+<div class="row pt-5 mt-5">
+<p>Available stock </p>
+<!-- getting the total number of attendents in the database -->
+    <table class="table table-striped table-sm">
+        <thead class="table-light">
+            <tr>
+                <th >#</th>
+                <th >Product-name</th>
+                <th >Buying-price</th>
+                <th >Selling-price</th>
+                <th >Measurement-type</th>
+                <th >Buying-price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $mysql=mysqli_query($conn, "select * from users");
+            $available_users = mysqli_num_rows($mysql);
+            $i=1;
+            while($i<$available_users):
+            while($users=$mysql->fetch_assoc()):
+            ?>
+            <tr>
+                <th><?php echo $i?></th>
+                <td><?php echo $users['username']?></td>
+                <td><?php echo $users['usertype']?></td>
+                <td><button class="btn btn-sm btn-primary"><a href="#" style="text-decoration:none; color:white;">Edit</button></td>
+                <td><button class="btn btn-sm btn-danger"><a href="processing.php?deleteuser='deleting'&&userid='<?php $users['id']?>'" style="text-decoration:none; color:white;">Delete</a></button></td>
+            </tr>
+            <?php 
+            $i=$i+1;
+            endwhile?>
+            <?php
+            endwhile?>
+        </tbody>
     </table>
+ </div>
+ <!-- end of available user diaplay on small screen -->
+ </div> 
+<!-- end of section Add user item click -->
+
 </div>
 </div>
 <?php }elseif($msg=="System users"){?>
 <!-- end of available stock -->
+
+
+
 <!-- beginning of system users section -->
 <div class="container">
 <div class="row m-auto pt-4 mt-4">
-<p style="margin-top:1px; margin-bottom:-2px; font-size:25px;" class="text-danger"><b>System Users section</b></p>
+<p style="margin-top:15px; margin-bottom:4px; font-size:23px; color:red;" class=" d-none d-sm-block"><b>System Users section</b></p>
+<p style="margin-top:1px; margin-bottom:-2px; font-size:20px; padding:15px; text-align:center;" class="text-danger d-md-none d-md-block"><b>System Users section</b></p>
         <!-- the dashboard section -->
         <?php 
         $i=0;
@@ -144,6 +183,7 @@ header('location:register.php');
             <?php
             $mysql=mysqli_query($conn, "select * from users");
             $available_users = mysqli_num_rows($mysql);
+            $available_users =$available_users +1;
             $i=1;
             while($i<$available_users):
             while($users=$mysql->fetch_assoc()):
@@ -155,8 +195,52 @@ header('location:register.php');
                 <td><?php echo $users['username']?></td>
                 <td><?php echo $users['usertype']?></td>
                 <td><?php echo $users['useremail']?></td>
-                <td><button class="btn btn-primary"><a href="#" style="text-decoration:none; color:white;">Edit-user</button></td>
-                <td><button class="btn btn-danger"><a href="processing.php?deleteuser='deleting'&& userid='<?php $users['id']?>'" style="text-decoration:none; color:white;">Delete-user</a></button></td>
+                <td><button class="btn btn-primary"><a href="register.php?edituser=true&&userid=<?php echo $users['id']?>" style="text-decoration:none; color:white;">Edit-user</button></td>
+                <td><button class="btn btn-danger"><a href="processing.php?deleteuser='deleting'&&userid=<?php echo $users['id']?>" style="text-decoration:none; color:white;">Delete-user</a></button></td>
+            </tr>
+            <?php 
+            $i=$i+1;
+            endwhile?>
+            <?php
+            endwhile?>
+        </tbody>
+    </table>
+    <?php if(isset($_GET['deletesucces'])){?>
+        <script>
+            alert('User successfully deleted...');
+        </script>
+    <?php }?>
+ </div>
+ <!-- available user display at small screens -->
+ <div class="row m-auto pt-4 mt-4 d-md-none d-md-block">
+<?php
+            $totalattendants=mysqli_query($conn, "select count(usertype) as total from users where usertype='attendant'");
+            $no_of_attendants = mysqli_fetch_assoc($totalattendants);
+?>
+<p style="font-weight:bold; color:red;">Total Attendants registered:<span style="color:black; padding-left:15px;"><?php echo $no_of_attendants['total'];?> users</span></p>
+    <table class="table table-striped table-sm">
+        <thead class="table-light">
+            <tr>
+                <th >#</th>
+                <th >Username</th>
+                <th >User-type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $mysql=mysqli_query($conn, "select * from users");
+            $available_users = mysqli_num_rows($mysql);
+            $available_users =$available_users +1;
+            $i=1;
+            while($i<$available_users):
+            while($users=$mysql->fetch_assoc()):
+            ?>
+            <tr>
+                <th><?php echo $i?></th>
+                <td><?php echo $users['username']?></td>
+                <td><?php echo $users['usertype']?></td>
+                <td><button class="btn btn-sm btn-primary"><a href="register.php?edituser=true&&userid=<?php echo $users['id']?>" style="text-decoration:none; color:white;">Edit</button></td>
+                <td><button class="btn btn-sm btn-danger"><a href="processing.php?deleteuser='deleting'&&userid='<?php $users['id']?>'" style="text-decoration:none; color:white;">Delete</a></button></td>
             </tr>
             <?php 
             $i=$i+1;
@@ -166,6 +250,7 @@ header('location:register.php');
         </tbody>
     </table>
  </div>
+ <!-- end of available user diaplay on small screen -->
  </div> 
 <?php }?>
 <!-- end of section Add user item click -->
