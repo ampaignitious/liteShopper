@@ -1,4 +1,7 @@
 <?php
+session_start();
+?>
+<?php
 include('database.php');
 ?>
 <!-- section for logining -->
@@ -96,7 +99,7 @@ if(isset($_POST['updateuser'])){
 <!-- registering products section -->
 <?php
 if(isset($_POST['registerproduct'])){
-$productname1 = mysqli_real_escape_string($conn, $_POST['productname']);
+$productname = mysqli_real_escape_string($conn, $_POST['productname']);
 $buyingprice =mysqli_real_escape_string($conn, $_POST['buyingprice']);
 $sellingprice = mysqli_real_escape_string($conn, $_POST['sellingprice']);
 $registeredby = mysqli_real_escape_string($conn, $_POST['registeredby']);
@@ -105,13 +108,15 @@ $enteredon =mysqli_real_escape_string($conn, $_POST['registeredon']);
 $quantity =mysqli_real_escape_string($conn, $_POST['quantity']);
 // check whether the product name already exits
 
-$products= mysqli_query($conn, "select productname from stock where productname =$productname1");
+$products= mysqli_query($conn, "select * from stock where productname='$productname'");
 $products_in_array = mysqli_num_rows($products);
+$prdts=mysqli_fetch_assoc($products);
+$prdts_name= $prdts['productname'];
 if($products_in_array>0){
-    header("location:dashboard1.php?msg=Register stock && regstrationmessage=product name already exits, update the product values");
+    header("location:dashboard1.php?msg=$prdts_name");
 }else{
-    mysqli_query($conn, "insert into stock (productname,buyingprice,sellingprice,registeredby,measurementtype,quantity,enteredon) values($productname1,$buyingprice,$sellingprice,$registeredby,$measurementtype,$quantity,$enteredon)");
-    header("location:dashboard1.php?msg=Register stock && regstrationmessage=product registered successfully");
+    mysqli_query($conn, "insert into stock (productname,buyingprice,sellingprice,registeredby,measurementtype,quantity,enteredon) values('$productname','$buyingprice','$sellingprice','$registeredby','$measurementtype','$quantity','$enteredon')");
+    header('location:dashboard1.php?msg=Product registered successfully');
 
 }
 }

@@ -1,6 +1,13 @@
 <?php
 include('mynav.php');
 ?>
+<?php
+$prdtname='';
+$buyingprice='';
+$sellingprice='';
+$quantity='';
+$enteredon='';
+?>
 <?php 
 if(!($_SESSION['USER_ID'])){
     header("location:login.php");
@@ -17,6 +24,7 @@ if(isset($_GET['msg'])){
 <?php     
 if($msg=="Logout"){
 session_start();
+unset($_SESSION['message']);
 unset( $_SESSION['USER_ID']);
 unset($_SESSION['USER_NAME']);
 header("location:login.php");
@@ -74,53 +82,12 @@ include('dashborditem.php');
 
 <?php
 }elseif($msg=="Register stock"){?>
-<!-- register stock section -->
-<div class="container">
-<div class="row m-auto pt-4 mt-5" >
-        <div class="col-md-3">
-        <img src="img3.png" class=" pt-4 d-none d-sm-block img-fluid" width="50%" alt="">
-        </div>
-        <div class="col-md-9">
-        <div class="col-md-9">
-        <h3 class="text-collapse"><small>Register Stock</small></h3>
-       <form action="processing.php" method="POST">
-        <label for="product-name" class="form-label">product-name:</label>
-        <input type="text" class="form-control" id="productname" name="productname" placeholder="enter product name"required>
-        <label for="buying-price" class="form-label">buying-price(shs):</label>
-        <input type="number" class="form-control" id="buyingprice" name="buyingprice" placeholder="enter buying price"required>
-        <label for="selling-price" class="form-label">selling-price(shs):</label>
-        <input type="number" class="form-control" id="sellingprice" name="sellingprice" placeholder="enter selling price"required>
-        <label for="user-email" class="form-label">Registered by:</label>
-        <select class="form-select" aria-label="User type" name="registeredby">
-         <option selected>select username</option>
-         <option value="admin">Admin</option>
-         <option value="attendant">Attendant</option>
-        </select>
-        <option selected>Select Measurement type</option>
-        <select class="form-select" aria-label="User type" name="measurementtype">
-         <option selected>Measurement</option>
-         <option value="boxes">boxes</option>
-         <option value="litres">litres</option>
-         <option value="kilograms">kilograms</option>
-         <option value="tins">tins</option>
-         <option value="onebyone">one by one</option>
-        </select>
-        <label for="date" class="form-label">Quantity:</label>
-        <input type="number" class="form-control" id="quantity" name="quantity" placeholder="enter product quantity"required>
-        <label for="date" class="form-label">Entered on:</label>
-        <input type="date" class="form-control" id="date" name="registeredon" placeholder="select registration date"required>
-        <br>
-        <button class="btn btn-sm bg-danger text-white p-2" type="submit" name="registerproduct">submit</a></button>
-        <br>
-        <br>
-       </form>
-    </div>  
-        </div>
-    </div>
-</div>
-<!-- end of register stock section -->
 
-
+<?php registerproduct($msg);?>
+<?php }elseif($msg=="Product registered successfully"){?>
+    <?php registerproduct($msg);?>
+    <?php }elseif($msg=="Product name already exits"){?>
+    <?php registerproduct($msg);?>
 <!-- start of available stock -->
 <?php }elseif($msg=="Available stock"){?>
 <div class="container ">
@@ -213,7 +180,9 @@ include('dashborditem.php');
 </div>
 </div>
 <!-- end of system users section -->
-<?php }?>
+<?php }else{
+registerproduct($msg);
+}?>
 
 
 <!-- working on system user section especially on item click -->
@@ -321,3 +290,86 @@ header('location:register.php');
  </div> 
 <?php }?>
 <!-- end of section Add user item click -->
+
+
+
+<?php
+function registerproduct($message){?>
+<?php $registrationmessage='';
+$regmsg='';
+$returnprdtdetails='';
+$prdtname='';
+$registrationmessage = $message;
+if($message=="Product registered successfully"){
+    $regmsg = $message;
+}else{
+    $returnprdtdetails = $message;
+    if(is_null($returnprdtdetails)){
+        
+    }else{
+        include('database.php');
+        $bbb = mysqli_query($conn, "select * from stock where productname='$returnprdtdetails'");
+        $prdtdetails=mysqli_fetch_assoc($bbb);
+        $prdtdetailsnum = mysqli_fetch_assoc($bbb);
+        $prdtname='';
+        if($prdtdetailsnum>0){
+            $prdtname=$prdtdetails['productname'];
+            $buyingprice=$prdtdetails['buyingprice'];
+            $sellingprice=$prdtdetails['sellingprice'];
+            $quantity=$prdtdetails['quantity'];
+            $enteredon=$prdtdetails['enteredon'];
+        }
+        // $regmsg = "product name already exits";
+    }
+
+}
+?>
+<!-- register stock section -->
+<div class="container">
+<div class="row m-auto pt-4 mt-5" >
+        <div class="col-md-3">
+        <img src="img3.png" class=" pt-4 d-none d-sm-block img-fluid" width="50%" alt="">
+        <p class="text-danger fw-bold"><?php echo $regmsg;?></p>
+        </div>
+        <div class="col-md-9">
+        <div class="col-md-9">
+        <h3 class="text-collapse"><small>Register Stock</small></h3>
+       <form action="processing.php" method="POST">
+        <label for="product-name" class="form-label">product-name:</label>
+        <input type="text" class="form-control" id="productname" name="productname" value="<?php echo $prdtname?>" placeholder="enter product name"required>
+        <label for="buying-price" class="form-label">buying-price(shs):</label>
+        <input type="number" class="form-control" id="buyingprice" name="buyingprice" value="<?php echo $buyingprice?>" placeholder="enter buying price"required>
+        <label for="selling-price" class="form-label">selling-price(shs):</label>
+        <input type="number" class="form-control" id="sellingprice" name="sellingprice" value="<?php echo $sellingprice?>" placeholder="enter selling price"required>
+        <label for="user-email" class="form-label">Registered by:</label>
+        <select class="form-select" aria-label="User type" name="registeredby">
+         <option selected>select username</option>
+         <option value="admin">Admin</option>
+         <option value="attendant">Attendant</option>
+        </select>
+        <option selected>Select Measurement type</option>
+        <select class="form-select" aria-label="User type" name="measurementtype">
+         <option selected>Measurement</option>
+         <option value="boxes">boxes</option>
+         <option value="litres">litres</option>
+         <option value="kilograms">kilograms</option>
+         <option value="tins">tins</option>
+         <option value="tins">dozens</option>
+         <option value="onebyone">one by one</option>
+        </select>
+        <label for="date" class="form-label">Quantity:</label>
+        <input type="number" class="form-control" id="quantity" value="<?php echo $quantity?>" name="quantity" placeholder="enter product quantity"required>
+        <label for="date" class="form-label">Entered on:</label>
+        <input type="date" class="form-control" id="date" value="<?php echo $enteredon?>" name="registeredon" placeholder="select registration date"required>
+        <br>
+        <button class="btn btn-sm bg-danger text-white p-2" type="submit" name="registerproduct">submit</a></button>
+        <br>
+        <br>
+       </form>
+    </div>  
+        </div>
+    </div>
+</div>
+<!-- end of register stock section -->
+
+<?php }?>
