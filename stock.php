@@ -9,11 +9,15 @@ $quantity='';
 $enteredon='';
 $regmsg='';
 $returnmessage='';
+$message='';
 ?>
 <?php 
 if(!($_SESSION['USER_ID'])){
     header("location:login.php");
     die();
+}
+if(isset($_SESSION['successmessage'])){
+    $message=$_SESSION['successmessage'];
 }
 ?>
 <?php
@@ -93,6 +97,8 @@ include('dashborditem.php');
 <div class="container ">
 <div class="row pt-5 mt-5 d-none d-sm-block">
 <p class="text-danger fw-bold" style="font-size:20px;">Available stock </p>
+<p class="text-danger fw-bold"><?php echo $message;?></p>
+<?php unset($_SESSION['successmessage']);?>
 <!-- getting the products in the database -->
     <table class="table table-striped table-sm">
         <thead class="table-light">
@@ -121,7 +127,7 @@ include('dashborditem.php');
                 <td><?php echo $products['measurementtype']?></td>
                 <td><?php echo $products['quantity']?></td>
                 <td><button class="btn btn-sm btn-primary"><a href="stock.php?edituser=true&&userid=<?php echo $products['id']?>" style="text-decoration:none; color:white;">Edit</button></td>
-                <td><button class="btn btn-sm btn-danger"><a href="processing.php?deleteproduct='<?php $products['id']?>'" style="text-decoration:none; color:white;">Delete</a></button></td>
+                <td><button class="btn btn-sm btn-danger"><a href="processing.php?deleteproduct=<?php echo $products['id']?>" style="text-decoration:none; color:white;">Delete</a></button></td>
             </tr>
             <?php 
             $i=$i+1;
@@ -161,7 +167,7 @@ include('dashborditem.php');
                 <td><?php echo $products['productname']?></td>
                 <td><?php echo $products['quantity']?></td>
                 <td><button class="btn btn-sm btn-primary"><a href="stock.php?editproduct=true&&productid=<?php echo $products['id']?>" style="text-decoration:none; color:white;">Edit</button></td>
-                <td><button class="btn btn-sm btn-danger"><a href="processing.php?deleteproduct='<?php $products['id']?>'" style="text-decoration:none; color:white;">Delete</a></button></td>
+                <td><button class="btn btn-sm btn-danger"><a href="processing.php?deleteproduct=<?php echo $products['id']?>" style="text-decoration:none; color:white;">Delete</a></button></td>
             </tr>
             <?php 
             $i=$i+1;
@@ -181,6 +187,7 @@ include('dashborditem.php');
         <div class="col-md-3">
         <img src="img3.png" class=" pt-4 d-none d-sm-block img-fluid" width="50%" alt="">
         <p class="text-danger fw-bold"><?php echo $returnmessage;?></p>
+        <p class="text-danger fw-bold"><?php echo $regmsg;?></p>
         </div>
         <div class="col-md-9">
         <div class="col-md-9">

@@ -123,13 +123,14 @@ if($products_in_array>0){
 ?>
 <!-- end of registring products section -->
 
-<!-- section for deleting a user -->
+<!-- section for deleting a product -->
 <?php
 $productid='';
 if(isset($_GET['deleteproduct'])){
     $productid=$_GET['deleteproduct'];
-    mysqli_query($conn, "delete from users where id=$productid");
-    header("location:stock.php?usersection=Available stock");
+    mysqli_query($conn, "delete from stock where id=$productid");
+    $_SESSION['successmessage']="product deleted successfully";
+    header("location:stock.php?msg=Available stock");
 }
 ?>
 <!-- end section for deleting a user -->
