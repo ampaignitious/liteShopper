@@ -134,3 +134,20 @@ if(isset($_GET['deleteproduct'])){
 }
 ?>
 <!-- end section for deleting a user -->
+
+
+<!-- section for updating the product details -->
+<?php
+if(isset($_POST['updateproduct'])){
+    $prdt_id =mysqli_real_escape_string($conn, $_POST['prdtid']);
+    $productname = mysqli_real_escape_string($conn, $_POST['productname']);
+    $buyingprice =mysqli_real_escape_string($conn, $_POST['buyingprice']);
+    $sellingprice = mysqli_real_escape_string($conn, $_POST['sellingprice']);
+    $registeredby = mysqli_real_escape_string($conn, $_POST['registeredby']);
+    $measurementtype =mysqli_real_escape_string($conn, $_POST['measurementtype']);
+    $enteredon =mysqli_real_escape_string($conn, $_POST['registeredon']);
+    $quantity =mysqli_real_escape_string($conn, $_POST['quantity']);
+    echo $prdt_id;
+}
+?>
+<!-- end section for updating the product details -->

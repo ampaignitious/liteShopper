@@ -10,6 +10,8 @@ $enteredon='';
 $regmsg='';
 $returnmessage='';
 $message='';
+$button='';
+$prdtid='';
 ?>
 <?php 
 if(!($_SESSION['USER_ID'])){
@@ -18,6 +20,19 @@ if(!($_SESSION['USER_ID'])){
 }
 if(isset($_SESSION['successmessage'])){
     $message=$_SESSION['successmessage'];
+}
+// implementing editing product functionlity
+if(isset($_GET['editproduct'])){
+    $prdtid = $_GET['productid'];
+    $userdetails=mysqli_query($conn, "select * from stock where id=$prdtid");
+    $details=mysqli_fetch_assoc($userdetails);
+    $prdtname=$details['productname'];
+    $buyingprice=$details['buyingprice'];
+    $sellingprice=$details['sellingprice'];
+    $quantity=$details['quantity'];
+    $enteredon=$details['enteredon'];
+    $button=$_GET['editproduct'];
+
 }
 ?>
 <?php
@@ -126,7 +141,7 @@ include('dashborditem.php');
                 <td><?php echo $products['sellingprice']?></td>
                 <td><?php echo $products['measurementtype']?></td>
                 <td><?php echo $products['quantity']?></td>
-                <td><button class="btn btn-sm btn-primary"><a href="stock.php?edituser=true&&userid=<?php echo $products['id']?>" style="text-decoration:none; color:white;">Edit</button></td>
+                <td><button class="btn btn-sm btn-primary"><a href="stock.php?editproduct=true&&productid=<?php echo $products['id']?>" style="text-decoration:none; color:white;">Edit</button></td>
                 <td><button class="btn btn-sm btn-danger"><a href="processing.php?deleteproduct=<?php echo $products['id']?>" style="text-decoration:none; color:white;">Delete</a></button></td>
             </tr>
             <?php 
@@ -193,6 +208,7 @@ include('dashborditem.php');
         <div class="col-md-9">
         <h3 class="text-collapse"><small>Register Stock</small></h3>
        <form action="processing.php" method="POST">
+       <input type="number" hidden="true" value="<?php echo $prdtid?>" name="prdtid">
         <label for="product-name" class="form-label">product-name:</label>
         <input type="text" class="form-control" id="productname" name="productname" value="<?php echo $prdtname?>" placeholder="enter product name"required>
         <label for="buying-price" class="form-label">buying-price(shs):</label>
@@ -201,9 +217,7 @@ include('dashborditem.php');
         <input type="number" class="form-control" id="sellingprice" name="sellingprice" value="<?php echo $sellingprice?>" placeholder="enter selling price"required>
         <label for="user-email" class="form-label">Registered by:</label>
         <select class="form-select" aria-label="User type" name="registeredby">
-         <option selected>select username</option>
-         <option value="admin">Admin</option>
-         <option value="attendant">Attendant</option>
+         <option selected value="<?php echo $_SESSION['USER_USERNAME']?>"><?php echo $_SESSION['USER_USERNAME']?></option>
         </select>
         <option selected>Select Measurement type</option>
         <select class="form-select" aria-label="User type" name="measurementtype">
@@ -219,10 +233,17 @@ include('dashborditem.php');
         <input type="number" class="form-control" id="quantity" value="<?php echo $quantity?>" name="quantity" placeholder="enter product quantity"required>
         <label for="date" class="form-label">Entered on:</label>
         <input type="date" class="form-control" id="date" value="<?php echo $enteredon?>" name="registeredon" placeholder="select registration date"required>
+        <?php if($button=='true'){?>
         <br>
-        <button class="btn btn-sm bg-danger text-white p-2" type="submit" name="registerproduct">submit</a></button>
+        <button class="btn btn-sm bg-danger text-white pr-5" type="submit" name="updateproduct">Update</button>
         <br>
         <br>
+        <?php }else{?>
+        <br>
+        <button class="btn btn-sm bg-danger text-white pr-5" type="submit" name="registerproduct">submit</button>
+        <br>
+        <br>
+        <?php }?>
        </form>
     </div>  
         </div>
