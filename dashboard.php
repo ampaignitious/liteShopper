@@ -24,13 +24,13 @@ echo $runningTime =date('h:i:s');
         <?php 
         $i=0;
         $items = array("Stock","Sales","View reports","System users");
-        $links=array("stock.php","reports.php","users.php");
+        $links=array("stock.php","dashboard1.php","dashboard1.php","dashboard1.php");
         $imgs=array("img6.png","img7.png","img4.png","user2.png");
         while($i<4):
         ?>
         <!-- section -->
         <div class="col-md-3 p-5 border">
-        <a href="dashboard1.php?msg=<?php echo $items[$i]?>"><img src="<?php echo $imgs[$i]?>" class="img-responsive" width="70%" alt=""  style="padding-left:38px;"></a>
+        <a href="<?php echo $links[$i]?>?msg=<?php echo $items[$i]?>"><img src="<?php echo $imgs[$i]?>" class="img-responsive" width="70%" alt=""  style="padding-left:38px;"></a>
         <br>
         <span class="d-md-none d-md-block"style="padding-left:90px;"><?php echo $items[$i]?></span>
         <div  class="d-none d-sm-block " style="text-align:center;">

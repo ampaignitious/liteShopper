@@ -111,14 +111,25 @@ $quantity =mysqli_real_escape_string($conn, $_POST['quantity']);
 $products= mysqli_query($conn, "select * from stock where productname='$productname'");
 $products_in_array = mysqli_num_rows($products);
 $prdts=mysqli_fetch_assoc($products);
-$prdts_name= $prdts['productname'];
+$prdts_id= $prdts['id'];
 if($products_in_array>0){
-    header("location:dashboard1.php?msg=$prdts_name");
+    header("location:stock.php?returnmessage=$prdts_id");
 }else{
     mysqli_query($conn, "insert into stock (productname,buyingprice,sellingprice,registeredby,measurementtype,quantity,enteredon) values('$productname','$buyingprice','$sellingprice','$registeredby','$measurementtype','$quantity','$enteredon')");
-    header('location:dashboard1.php?msg=Product registered successfully');
+    header("location:stock.php?returnmessage=Product registered successfully");
 
 }
 }
 ?>
 <!-- end of registring products section -->
+
+<!-- section for deleting a user -->
+<?php
+$productid='';
+if(isset($_GET['deleteproduct'])){
+    $productid=$_GET['deleteproduct'];
+    mysqli_query($conn, "delete from users where id=$productid");
+    header("location:stock.php?usersection=Available stock");
+}
+?>
+<!-- end section for deleting a user -->

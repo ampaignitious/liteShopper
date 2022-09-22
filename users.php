@@ -1,46 +1,6 @@
 <?php
 include('mynav.php');
 ?>
-<?php
-$prdtname='';
-$buyingprice='';
-$sellingprice='';
-$quantity='';
-$enteredon='';
-$regmsg='';
-$returnmessage='';
-?>
-<?php 
-if(!($_SESSION['USER_ID'])){
-    header("location:login.php");
-    die();
-}
-?>
-<?php
-$usersection='';
-$msg='';
-if(isset($_GET['msg'])){
-    $msg=$_GET['msg'];
-
-}
-if(isset($_GET['returnmessage'])){
-    $returnmessage =$_GET['returnmessage'];
-}
-?>
-<?php     
-if($msg=="Logout"){
-session_start();
-unset($_SESSION['message']);
-unset( $_SESSION['USER_ID']);
-unset($_SESSION['USER_NAME']);
-header("location:login.php");
-die();
-
-}elseif($msg=="System users"){?>
-<!-- end of available stock -->
-
-
-
 <!-- beginning of system users section -->
 <div class="container">
 <div class="row m-auto pt-4 mt-4">
@@ -56,7 +16,7 @@ die();
         ?>
         <!-- section -->
         <div class="col-md-4 col-sm-12 p-5 border">
-        <a href="dashboard1.php?usersection=<?php echo $items[$i]?>" style="padding-left:38px;"><img src="<?php echo $imgs[$i]?>" class="img-responsive" width="60%" alt=""  style="padding-left:38px;"></a>
+        <a href="users.php?usersection=<?php echo $items[$i]?>" style="padding-left:38px;"><img src="<?php echo $imgs[$i]?>" class="img-responsive" width="60%" alt=""  style="padding-left:38px;"></a>
         <br>
         <span class="d-md-none d-md-block"style="padding-left:90px;"><?php echo $items[$i]?></span>
         <div  class="d-none d-sm-block " style="text-align:center; ">
@@ -82,14 +42,11 @@ die();
 </div>
 </div>
 <!-- end of system users section -->
-<?php }else{
-
-}?>
 
 
-<!-- working on system user section especially on item click -->
-<!-- start of section Add user item click -->
+
 <?php
+$usersection='';
 if(isset($_GET['usersection'])){
     $usersection = $_GET['usersection'];
     echo $usersection;?>
@@ -192,5 +149,3 @@ header('location:register.php');
  </div> 
 <?php }?>
 <!-- end of section Add user item click -->
-
-

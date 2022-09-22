@@ -30,7 +30,7 @@ include('database.php');
           <a class="nav-link active text-white" aria-current="page" href="dashboard.php">Home</a>
         </li>
         <li class="nav-item ">
-          <a class="nav-link active text-white" aria-current="page" href="dashboard1.php?msg=<?php echo $items[0]?>">Stock</a>
+          <a class="nav-link active text-white" aria-current="page" href="stock.php?msg=<?php echo $items[0]?>">Stock</a>
         </li>
         <li class="nav-item ">
           <a class="nav-link active text-white" aria-current="page" href="dashboard1.php?msg=<?php echo $items[1]?>">Sales</a>
