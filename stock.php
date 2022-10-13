@@ -12,6 +12,7 @@ $returnmessage='';
 $message='';
 $button='';
 $prdtid='';
+$updatemessage='';
 ?>
 <?php 
 if(!($_SESSION['USER_ID'])){
@@ -32,7 +33,6 @@ if(isset($_GET['editproduct'])){
     $quantity=$details['quantity'];
     $enteredon=$details['enteredon'];
     $button=$_GET['editproduct'];
-
 }
 ?>
 <?php
@@ -40,6 +40,24 @@ $usersection='';
 $msg='';
 if(isset($_GET['msg'])){
 $msg =$_GET['msg'];
+}
+if(isset($_GET['updatemessage'])){
+    $updatemessage=$_GET['updatemessage'];  
+    if($updatemessage==="Product updated successfully.."){
+        $returnmessage ="Product details updated successfully.....";
+    }else{
+        $details =mysqli_query($conn,"select * from stock where id ='$updatemessage'");
+        $return_details = mysqli_fetch_assoc($details);
+        $return_details_no = mysqli_num_rows($details);
+        if($return_details_no > 0){
+            $prdtname=$return_details['productname'];
+            $buyingprice=$return_details['buyingprice'];
+            $sellingprice=$return_details['sellingprice'];
+            $quantity=$return_details['quantity'];
+            $enteredon=$return_details['enteredon'];
+            $returnmessage ="Product name, $prdtname already exits.....";
+        }
+    }
 }
 if(isset($_GET['returnmessage'])){
     $returnmessage=$_GET['returnmessage'];
@@ -209,6 +227,7 @@ include('dashborditem.php');
         <h3 class="text-collapse"><small>Register Stock</small></h3>
        <form action="processing.php" method="POST">
        <input type="number" hidden="true" value="<?php echo $prdtid?>" name="prdtid">
+       <input type="text" hidden="true" value="<?php echo $prdtname?>" name="defaultproductname">
         <label for="product-name" class="form-label">product-name:</label>
         <input type="text" class="form-control" id="productname" name="productname" value="<?php echo $prdtname?>" placeholder="enter product name"required>
         <label for="buying-price" class="form-label">buying-price(shs):</label>

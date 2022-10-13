@@ -141,13 +141,22 @@ if(isset($_GET['deleteproduct'])){
 if(isset($_POST['updateproduct'])){
     $prdt_id =mysqli_real_escape_string($conn, $_POST['prdtid']);
     $productname = mysqli_real_escape_string($conn, $_POST['productname']);
+    $default_product=mysqli_real_escape_string($conn, $_POST['defaultproductname']);
     $buyingprice =mysqli_real_escape_string($conn, $_POST['buyingprice']);
     $sellingprice = mysqli_real_escape_string($conn, $_POST['sellingprice']);
     $registeredby = mysqli_real_escape_string($conn, $_POST['registeredby']);
     $measurementtype =mysqli_real_escape_string($conn, $_POST['measurementtype']);
     $enteredon =mysqli_real_escape_string($conn, $_POST['registeredon']);
     $quantity =mysqli_real_escape_string($conn, $_POST['quantity']);
-    echo $prdt_id;
+    $checkproduct=mysqli_query($conn, "select * from stock where productname='$productname'");
+    $productexit =mysqli_num_rows($checkproduct);
+    if((($productexit>0) && ($default_product!=$productname))){
+        header("location:stock.php?updatemessage=$prdt_id");
+    }else{
+       mysqli_query($conn, "update stock set productname='$productname', buyingprice='$buyingprice',sellingprice='$sellingprice',registeredby='$registeredby',measurementtype='$measurementtype',quantity='$quantity', enteredon='$enteredon' where id ='$prdt_id '");
+       $_SESSION['successmessage']="product details updated successfully";
+       header("location:stock.php?msg=Available stock");
+    }
 }
 ?>
 <!-- end section for updating the product details -->
